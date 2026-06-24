@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <!-- 모바일 세로 화면(릴스 촬영) 최적화: viewport 고정 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>오늘의 최애는? · fromis_9</title>
+  <meta name="description" content="생년월일을 입력하면 오늘의 fromis_9 최애와 운세를 알려드려요. (입력값은 저장·전송되지 않아요)" />
+
+  <!-- 구글 웹폰트: Jua(귀여운 제목용), Noto Sans KR(본문/사자성어 공용)
+       실패하면 아래 style.css 의 시스템 폰트 fallback 으로 자동 대체됩니다. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+
+    <!-- ================= 1) 입력 화면 ================= -->
+    <section id="inputScreen" class="screen">
+      <div class="intro">
+        <!-- 헤더 로고: images/logo.png 가 있으면 로고를, 없으면 🍓✨ 이모지를 보여줍니다.
+             로고를 바꾸려면 images/logo.png 파일만 교체하세요. -->
+        <p class="intro-logo">
+          <img src="images/logo.png" alt="fromis_9" onerror="this.classList.add('is-missing')" />
+          <span class="intro-emoji">🍓✨</span>
+        </p>
+        <h1 class="title">오늘의 최애는?</h1>
+        <p class="subtitle">fromis_9 데일리 최애 &amp; 운세</p>
+      </div>
+
+      <div class="card input-card">
+        <p class="field-label">생년월일을 알려주세요</p>
+
+        <div class="date-row">
+          <label class="date-field">
+            <select id="yearSelect" aria-label="태어난 년도"></select>
+            <span class="unit">년</span>
+          </label>
+          <label class="date-field">
+            <select id="monthSelect" aria-label="태어난 월"></select>
+            <span class="unit">월</span>
+          </label>
+          <label class="date-field">
+            <select id="daySelect" aria-label="태어난 일"></select>
+            <span class="unit">일</span>
+          </label>
+        </div>
+
+        <p id="inputError" class="input-error" hidden>생년월일을 모두 선택해 주세요 🙏</p>
+
+        <button id="startBtn" class="btn btn-primary">오늘의 최애 보기</button>
+
+        <p class="privacy-note">🔒 입력하신 정보는 저장되거나 전송되지 않습니다.</p>
+      </div>
+    </section>
+
+    <!-- ================= 2) 결과 화면 ================= -->
+    <section id="resultScreen" class="screen" hidden>
+
+      <!-- 룰렛/슬롯 연출 -->
+      <div id="rouletteStage" class="roulette-stage">
+        <p class="roulette-caption">오늘의 최애는...?</p>
+        <div id="slot" class="slot"></div>
+      </div>
+
+      <!-- 결과 카드 (룰렛이 멈추면 부드럽게 등장) -->
+      <div id="resultCard" class="card result-card" hidden>
+        <p class="card-label">오늘의 최애는</p>
+        <h2 id="memberName" class="member-name">멤버</h2>
+
+        <div id="memberPhoto" class="member-photo"><!-- 이미지 or 플레이스홀더 --></div>
+
+        <div class="fortune">
+          <p class="fortune-label">🔮 오늘의 운세</p>
+          <p class="fortune-idiom">
+            <span id="idiomKo" class="idiom-ko">사자성어</span>
+            <span id="idiomHanja" class="idiom-hanja">四字成語</span>
+          </p>
+          <p id="fortuneDesc" class="fortune-desc">오늘의 운세 해설이 여기에 표시됩니다.</p>
+        </div>
+
+        <p id="resultDate" class="result-date">2026.06.24</p>
+      </div>
+
+      <!-- 저장 / 공유 / 다시하기 버튼 -->
+      <div id="actionButtons" class="actions" hidden>
+        <button id="saveBtn" class="btn btn-primary">📷 사진 저장하기</button>
+        <button id="shareBtn" class="btn btn-secondary" hidden>🔗 공유하기</button>
+        <button id="retryBtn" class="btn btn-ghost">↺ 다시 하기</button>
+      </div>
+    </section>
+
+    <footer class="app-footer">made for fromis_9 🤍 · 비공식 팬 미니앱</footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

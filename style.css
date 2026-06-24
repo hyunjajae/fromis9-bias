@@ -1,0 +1,415 @@
+/* =======================================================================
+   fromis_9 "오늘의 최애" · 스타일
+   -----------------------------------------------------------------------
+   ▶ 색상/테마는 아래 :root 변수만 바꾸면 사이트 전체 색이 바뀝니다.
+     (멤버별 상징색 테마는 쓰지 않고, 파스텔 팔레트 하나로 통일했습니다.)
+   ▶ JavaScript 의 캔버스 저장 이미지 색은 script.js 상단 THEME 값과
+     맞춰져 있으니, 색을 바꿀 때 두 곳을 함께 수정하면 가장 깔끔합니다.
+   ======================================================================= */
+
+:root {
+  /* --- 배경 그라데이션 --- */
+  --bg-1: #fff1f6;        /* 위쪽: 딸기우유 핑크 */
+  --bg-2: #f1ecff;        /* 아래쪽: 연보라 */
+
+  /* --- 카드 / 면 --- */
+  --card: #ffffff;
+  --card-shadow: 0 18px 40px rgba(180, 140, 170, 0.22);
+
+  /* --- 포인트 컬러 --- */
+  --accent: #ff8fb1;      /* 메인 포인트(핑크) */
+  --accent-deep: #ff6f9c; /* 버튼 호버 등 진한 핑크 */
+  --accent-soft: #ffe2ec; /* 연한 핑크 면 */
+  --lav: #b9a3ff;         /* 보조 포인트(라벤더) */
+
+  /* --- 텍스트 --- */
+  --ink: #5a4651;         /* 본문 텍스트 */
+  --ink-soft: #a596a0;    /* 보조 텍스트 */
+
+  /* --- 운세 박스 --- */
+  --fortune-bg: #f6f1ff;
+  --fortune-border: #e7dcff;
+
+  /* --- 둥글기 --- */
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 12px;
+
+  /* --- 폰트 (웹폰트 실패 시 시스템 폰트로 fallback) --- */
+  --font-title: 'Jua', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+  --font-body: 'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+/* hidden 속성이 항상 우선하도록 (아래 display:flex 등이 hidden 을 덮어쓰는 것 방지) */
+[hidden] { display: none !important; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: linear-gradient(160deg, var(--bg-1) 0%, var(--bg-2) 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  justify-content: center;
+}
+
+/* 모바일 우선: 가운데 정렬된 좁은 컬럼 */
+.app {
+  width: 100%;
+  max-width: 440px;
+  min-height: 100vh;
+  padding: 28px 20px 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.screen {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+  animation: fadeIn 0.4s ease both;
+}
+
+/* ===================== 입력 화면 ===================== */
+.intro { text-align: center; }
+
+/* 헤더 로고 영역 */
+.intro-logo {
+  margin: 0 0 8px;
+  line-height: 1;
+}
+.intro-logo img {
+  height: 84px;
+  width: auto;
+  vertical-align: middle;
+  /* 흰 배경 로고도 자연스럽게 떠 보이도록 살짝 그림자 */
+  filter: drop-shadow(0 6px 12px rgba(255, 143, 177, 0.28));
+}
+/* 로고 파일이 없을 때(onerror)만 이모지 fallback 표시 */
+.intro-logo img.is-missing { display: none; }
+.intro-emoji {
+  display: none;
+  font-size: 30px;
+}
+.intro-logo img.is-missing + .intro-emoji { display: inline; }
+
+.title {
+  font-family: var(--font-title);
+  font-size: 42px;
+  line-height: 1.15;
+  margin: 0;
+  color: var(--accent-deep);
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--card-shadow);
+  padding: 26px 22px;
+}
+
+.field-label {
+  margin: 0 0 14px;
+  font-weight: 700;
+  font-size: 16px;
+  text-align: center;
+}
+
+.date-row {
+  display: flex;
+  gap: 8px;
+}
+
+.date-field {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.date-field select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 2px solid var(--accent-soft);
+  background: #fff;
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  padding: 13px 26px 13px 12px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+}
+
+.date-field select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+/* 셀렉트 옆 단위(년/월/일) 표시 */
+.date-field .unit {
+  position: absolute;
+  right: 10px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  pointer-events: none;
+}
+
+.input-error {
+  margin: 12px 0 0;
+  text-align: center;
+  color: var(--accent-deep);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.privacy-note {
+  margin: 16px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+/* ===================== 버튼 ===================== */
+.btn {
+  width: 100%;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 15px 16px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  margin-top: 20px;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(255, 143, 177, 0.45);
+}
+.btn-primary:hover { background: var(--accent-deep); }
+
+.btn-secondary {
+  background: var(--lav);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(185, 163, 255, 0.4);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-soft);
+  font-weight: 500;
+  box-shadow: none;
+}
+
+/* ===================== 룰렛 연출 ===================== */
+.roulette-stage {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.roulette-caption {
+  font-family: var(--font-title);
+  font-size: 24px;
+  color: var(--accent-deep);
+  margin: 0;
+}
+
+.slot {
+  width: 220px;
+  height: 270px;
+  border-radius: var(--radius-lg);
+  background: var(--card);
+  box-shadow: var(--card-shadow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  overflow: hidden;
+}
+
+/* 룰렛이 한 칸 바뀔 때마다 살짝 튀는 느낌 */
+.slot.tick { animation: pop 0.12s ease; }
+
+.slot .slot-thumb {
+  width: 150px;
+  height: 150px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
+.slot .slot-name {
+  font-family: var(--font-title);
+  font-size: 30px;
+  color: var(--ink);
+}
+
+/* ===================== 결과 카드 ===================== */
+.result-card {
+  text-align: center;
+  padding: 24px 20px 20px;
+  animation: cardIn 0.55s cubic-bezier(0.18, 0.89, 0.32, 1.28) both;
+}
+
+.card-label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+.member-name {
+  font-family: var(--font-title);
+  font-size: 40px;
+  margin: 2px 0 16px;
+  color: var(--accent-deep);
+  letter-spacing: -0.5px;
+}
+
+/* 최애 짤(카드의 주인공). 정사각형 비율 */
+.member-photo {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: var(--accent-soft);
+}
+
+.member-photo .photo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 이미지가 없거나 로드 실패 시 보이는 플레이스홀더 */
+.photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(150deg, var(--accent-soft), var(--fortune-bg));
+  color: var(--accent-deep);
+}
+.photo-placeholder .ph-heart { font-size: 34px; opacity: 0.7; }
+.photo-placeholder .ph-name {
+  font-family: var(--font-title);
+  font-size: 26px;
+  color: var(--ink);
+}
+
+/* --- 오늘의 운세 (보조) --- */
+.fortune {
+  margin-top: 18px;
+  background: var(--fortune-bg);
+  border: 1.5px solid var(--fortune-border);
+  border-radius: var(--radius-md);
+  padding: 16px 14px 18px;
+}
+
+.fortune-label {
+  margin: 0 0 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--lav);
+}
+
+.fortune-idiom {
+  margin: 0;
+  font-family: var(--font-body);
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+.idiom-ko {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.idiom-hanja {
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.fortune-desc {
+  margin: 7px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.result-date {
+  margin: 14px 0 0;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+/* ===================== 액션 버튼 영역 ===================== */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ===================== 푸터 ===================== */
+.app-footer {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink-soft);
+}
+
+/* ===================== 애니메이션 ===================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes pop {
+  0%   { transform: scale(0.94); }
+  100% { transform: scale(1); }
+}
+
+/* 접근성: 움직임 최소화 설정을 켠 사용자에게는 애니메이션을 줄임 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
