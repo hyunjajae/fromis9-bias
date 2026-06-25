@@ -18,6 +18,10 @@
    - 파일이 없거나 로드에 실패하면 멤버 이름이 적힌 플레이스홀더가 대신 떠요.
 */
 const MEMBERS = [
+  // ※ 중요: 아래 images 경로는 images 폴더의 "실제 파일명"과 정확히 같아야 합니다.
+  //   (확장자 .jpeg / .gif 까지!) 없는 파일을 적으면 그 칸은 플레이스홀더로 빠지고,
+  //   배열 길이가 멤버마다 다르면 사진이 골고루 안 나옵니다.
+  //   → 사진을 바꿀 땐 파일명을 그대로 여기에 맞춰 적어주세요. 현재는 멤버당 5개.
   {
     nameKo: '송하영', nameEn: 'Hayoung',
     images: [
@@ -25,20 +29,17 @@ const MEMBERS = [
       'images/hayoung2.jpeg',
       'images/hayoung3.jpeg',
       'images/hayoung4.jpeg',
-      'images/hayoung5.jpeg',
-      'images/hayoung6.jpeg',
-      'images/hayoung7.gif',
+      'images/hayoung5.gif',
     ],
   },
   {
     nameKo: '박지원', nameEn: 'Jiwon',
     images: [
       'images/jiwon.jpeg',
-      'images/jiwon2.jpeg',
+      'images/jiwon2.gif',
       'images/jiwon3.jpeg',
       'images/jiwon4.jpeg',
       'images/jiwon5.jpeg',
-      'images/jiwon6.gif',
     ],
   },
   {
@@ -56,10 +57,9 @@ const MEMBERS = [
     images: [
       'images/nagyung.jpeg',
       'images/nagyung2.jpeg',
-      'images/nagyung3.jpeg',
+      'images/nagyung3.gif',
       'images/nagyung4.jpeg',
       'images/nagyung5.jpeg',
-      'images/nagyung6.gif',
     ],
   },
   {
